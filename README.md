@@ -1,1 +1,78 @@
 # Kona JDK测试集
+
+## 测试工具
+
+- 测试执行工具：Gradle
+- 功能测试工具：JUnit 5
+- 性能测试工具：JMH
+
+## 协程
+
+### 测试目标
+
+- 功能：KonaJDK 8协程版能够创建协程，并在其中执行任务。
+- 兼容性：KonaJDK 8协程版使用与OpenJDK 21相同的API创建协程。
+- 性能：KonaJDK 8协程版在协程切换方面的性能高于OpenJDK 21。
+
+注：OpenJDK从版本21开始才实现了协程。
+
+### 功能测试
+
+```
+export JAVA_HOME=/path/to/konafiber8
+gradle :konafiber8:testOnCurrent --tests "cstc.fiber.*"
+```
+
+```
+export JAVA_HOME=/path/to/openjdk21
+gradle :openjdk21:testOnCurrent --tests "cstc.fiber.*"
+```
+
+### 兼容性测试
+
+同功能测试。测试程序仅使用与OpenJDK 21相同的API。
+
+### 性能测试
+
+```
+export JAVA_HOME=/path/to/konafiber8
+gradle :konafiber8:jmh --args="cstc.fiber.*"
+```
+
+```
+export JAVA_HOME=/path/to/openjdk21
+gradle :openjdk21:jmh --args="cstc.fiber.*"
+```
+
+## 国密
+
+### 测试目标
+
+- 功能：KonaJDK 8能够使用国密算法SM2，SM3和SM4，并能使用国密TLPC协议创建安全连接。
+- 兼容性：KonaJDK 8的国密实现完全兼容JDK的JCA/JCE和JSSE框架。
+- 性能：KonaJDK 8的TLCP握手性能高于OpenJDK 8的TLS握手。
+
+注：OpenJDK不支持任何国密特性。
+
+### 功能测试
+
+```
+export JAVA_HOME=/path/to/konajdk8
+gradle :konajdk8:testOnCurrent --tests "cstc.crypto.*"
+gradle :konajdk8:testOnCurrent --tests "cstc.ssl.*"
+```
+
+### 兼容性测试
+
+同功能测试。测试程序仅使用JDK的JCA/JCE和JSSE框架的API。
+
+### 性能测试
+
+```
+export JAVA_HOME=/path/to/konajdk8(或openjdk8)
+gradle :konajdk8:jmh --args="cstc.ssl.*"
+```
+
+## AOT编译
+
+AOT编译特性的测试将使用KonaJDK 8与OpenJDK 8。该测试相对复杂，需要在特定的测试环境中执行`HiBench`测试基准，以观察到开启AOT的KonaJDK 8的性能优势。

@@ -34,7 +34,7 @@
  * @run main/othervm SSLSocketTemplate
  */
 
-package cstc.sm;
+package cstc.ssl;
 
 import org.junit.jupiter.api.Test;
 
