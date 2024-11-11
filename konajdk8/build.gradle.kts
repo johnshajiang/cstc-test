@@ -29,4 +29,5 @@ dependencies {
     jmhImplementation(libs.jmh.core)
     jmhAnnotationProcessor(libs.jmh.generator.annprocess)
     jmhImplementation(sourceSets["test"].runtimeClasspath)
+    jmhImplementation("org.apache.hadoop:hadoop-common:2.7.3")
 }

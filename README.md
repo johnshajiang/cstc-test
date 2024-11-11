@@ -1,4 +1,4 @@
-# Kona JDK测试集
+# KonaJDK测试集
 
 ## 测试工具
 
@@ -71,6 +71,19 @@ gradle :konajdk8:testOnCurrent --tests "cstc.ssl.*"
 ```
 export JAVA_HOME=/path/to/konajdk8(或openjdk8)
 gradle :konajdk8:jmh --args="cstc.ssl.*"
+```
+
+## UTF-8编码
+
+### 测试目标
+
+- 性能：KonaJDK 8的UTF-8编码与解码性能高于OpenJDK 8。
+
+### 性能测试
+
+```
+export JAVA_HOME=/path/to/konajdk8(或openjdk8)
+gradle :konajdk8:jmh --tests "cstc.utf8.*"
 ```
 
 ## AOT编译
