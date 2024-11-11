@@ -2,46 +2,33 @@
 
 ## 测试工具
 
-- 测试执行工具：Gradle
-- 功能测试工具：JUnit 5
-- 性能测试工具：JMH
+- 测试执行工具：Gradle 8.10.1
+- 功能测试工具：JUnit 5.10
+- 性能测试工具：
+  - 微基准测试工具：JMH 1.37
+  - 大数据基准测试工具：HiBench 7.0
 
 ## 协程
 
 ### 测试目标
 
-- 功能：KonaJDK 8协程版能够创建协程，并在其中执行任务。
-- 兼容性：KonaJDK 8协程版使用与OpenJDK 21相同的API创建协程。
-- 性能：KonaJDK 8协程版在协程切换方面的性能高于OpenJDK 21。
-
-注：OpenJDK从版本21开始才实现了协程。
+- 功能：KonaJDK 8能够创建协程，并在其中执行任务。
+- 兼容性：调用KonaJDK 8的协程实现只需要使用OpenJDK 21的API。
 
 ### 功能测试
 
 ```
-export JAVA_HOME=/path/to/konafiber8
-gradle :konafiber8:testOnCurrent --tests "cstc.fiber.*"
-```
-
-```
-export JAVA_HOME=/path/to/openjdk21
-gradle :openjdk21:testOnCurrent --tests "cstc.fiber.*"
+export JAVA_HOME=/path/to/konajdk8
+gradle :konajdk8:testOnCurrent --tests "cstc.fiber.*"
 ```
 
 ### 兼容性测试
 
-同功能测试。测试程序仅使用与OpenJDK 21相同的API。
-
-### 性能测试
-
-```
-export JAVA_HOME=/path/to/konafiber8
-gradle :konafiber8:jmh --args="cstc.fiber.*"
-```
+相同的的功能测试程序也可以在OpenJDK 21上成功编译。
 
 ```
 export JAVA_HOME=/path/to/openjdk21
-gradle :openjdk21:jmh --args="cstc.fiber.*"
+gradle :konafiber8:compileTestJava
 ```
 
 ## 国密
@@ -49,10 +36,8 @@ gradle :openjdk21:jmh --args="cstc.fiber.*"
 ### 测试目标
 
 - 功能：KonaJDK 8能够使用国密算法SM2，SM3和SM4，并能使用国密TLPC协议创建安全连接。
-- 兼容性：KonaJDK 8的国密实现完全兼容JDK的JCA/JCE和JSSE框架。
-- 性能：KonaJDK 8的TLCP握手性能高于OpenJDK 8的TLS握手。
-
-注：OpenJDK不支持任何国密特性。
+- 兼容性：调用KonaJDK 8的国密实现只需要使用OpenJDK的API。
+- 性能：KonaJDK 8中的TLCP握手性能高于TLS握手。
 
 ### 功能测试
 
@@ -64,12 +49,17 @@ gradle :konajdk8:testOnCurrent --tests "cstc.ssl.*"
 
 ### 兼容性测试
 
-同功能测试。测试程序仅使用JDK的JCA/JCE和JSSE框架的API。
+相同的的功能测试程序也可以在OpenJDK 8上成功编译。
+
+```
+export JAVA_HOME=/path/to/openjdk8
+gradle :konajdk8:compileTestJava
+```
 
 ### 性能测试
 
 ```
-export JAVA_HOME=/path/to/konajdk8(或openjdk8)
+export JAVA_HOME=/path/to/konajdk8
 gradle :konajdk8:jmh --args="cstc.ssl.*"
 ```
 
@@ -77,12 +67,19 @@ gradle :konajdk8:jmh --args="cstc.ssl.*"
 
 ### 测试目标
 
-- 性能：KonaJDK 8的UTF-8编码与解码性能高于OpenJDK 8。
+- 性能：KonaJDK 8的UTF-8编码与解码性能提升。
 
 ### 性能测试
 
+当KonaJDK 8.0.7升级到8.0.20之后，UTF-8编解码的性能有提升。
+
 ```
-export JAVA_HOME=/path/to/konajdk8(或openjdk8)
+export JAVA_HOME=/path/to/konajdk8.0.20
+gradle :konajdk8:jmh --tests "cstc.utf8.*"
+```
+
+```
+export JAVA_HOME=/path/to/konajdk8.0.7
 gradle :konajdk8:jmh --tests "cstc.utf8.*"
 ```
 
